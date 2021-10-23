@@ -41,13 +41,15 @@ public class CustomRequestBuilder {
 			String intent = queryResult.getIntent().getDisplayName();
 
 			// print the text answer
-			System.out.println("Msg: "+queryResult.getFulfillmentText());
+			System.out.println(queryResult.getFulfillmentText());
 			// switch-case to treat different intents differently
 			switch (intent) {
 			case "Default Welcome Intent": // just checking that it is the welcome intent
 				System.out.println("hello");
 				break;
-
+			case "order.Pizza":
+				System.out.println("Pizza ordered");
+				break;
 			case "Goodbye":
 				System.out.println("Thank you, goodbye");
 				break;

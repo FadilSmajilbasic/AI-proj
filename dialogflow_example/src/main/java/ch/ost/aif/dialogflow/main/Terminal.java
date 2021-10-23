@@ -10,7 +10,7 @@ public class Terminal {
 	public static void main(String[] args) {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		try {
-			System.out.println("Hallo, please enter a line for the client and confirm with enter, q for quit");
+			System.out.println("Hallo, please enter a line for the client and confirm with enter, 'q' for quit");
 			String line = "";
 			while (true) {
 				line = br.readLine();
@@ -24,7 +24,6 @@ public class Terminal {
 			}
 			System.out.println("Goodbye");
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
