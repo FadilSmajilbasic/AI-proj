@@ -20,7 +20,7 @@ public class CustomRequestBuilder {
 		try (SessionsClient sessionsClient = SessionsClient.create()) {
 			// Set the session name using the sessionId (UUID) and projectID (my-project-id)
 			SessionName session = SessionName.of(projectId, sessionId);
-			System.out.println("Session Path: " + session.toString());
+			//System.out.println("Session Path: " + session.toString());
 
 			// Detect intents for each text input
 
@@ -50,13 +50,16 @@ public class CustomRequestBuilder {
 			case "order.Pizza":
 				System.out.println("Pizza ordered");
 				break;
+			case "order.waffle":
+				System.out.println("Waffle ordered");
+				break;
+			case "order.icecream":
+				System.out.print("Ice cream ordered");
 			case "Goodbye":
 				System.out.println("Thank you, goodbye");
 				break;
 			default: // mirrors the intent string and the payload as default (if the intent isn't
 						// treated specially)
-				System.out.println("(REMOVE PRINT)Intent: "+ intent);
-				System.out.println("(REMOVE PRINT)Full Msg: "+ queryResult.getFulfillmentMessagesOrBuilderList());
 			}
 		}
 	}
