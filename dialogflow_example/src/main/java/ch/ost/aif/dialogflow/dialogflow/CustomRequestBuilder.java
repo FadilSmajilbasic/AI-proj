@@ -50,28 +50,52 @@ public class CustomRequestBuilder {
 				System.out.println("hello");
 				break;
 			case "order.Pizza-yes":
-				System.out.println("orderpizza-yes");
-					 
-					for (int i = 0; i < queryResult.getOutputContextsCount(); i++) {
-						if(queryResult.getOutputContexts(i).getName().endsWith("orderpizza-followup")) {
-							
-							Map<String, Value> parameters = queryResult.getOutputContexts(i).getParameters().getFieldsMap();
 
-							
-							double price = Helper.calculatePricePizza(parameters.get("size").getStringValue(), parameters.get("pizza").getStringValue(), parameters.get("delivery-pickup").getStringValue());
-							System.out.println("Total price: " + price); 
+				for (int i = 0; i < queryResult.getOutputContextsCount(); i++) {
+					if (queryResult.getOutputContexts(i).getName().endsWith("orderpizza-followup")) {
+
+						Map<String, Value> parameters = queryResult.getOutputContexts(i).getParameters().getFieldsMap();
+
+						double price = Helper.calculatePricePizza(parameters.get("size").getStringValue(),
+								parameters.get("pizza").getStringValue(),
+								parameters.get("delivery-pickup").getStringValue());
+						System.out.println("Total price: " + price);
+						SevenSegmentDisplay display = new SevenSegmentDisplay();
+
+						display.printLargeNumber(price);
+						break;
+					}
+				}
+
+				break;
+
+			case "order.drink.same_card":
+			case "order.drink.different_card":
+				if (queryResult.getAllRequiredParamsPresent()) {
+					for (int i = 0; i < queryResult.getOutputContextsCount(); i++) {
+						if (queryResult.getOutputContexts(i).getName().endsWith("orderdrink-followup")) {
+
+							Map<String, Value> parameters = queryResult.getOutputContexts(i).getParameters()
+									.getFieldsMap();
+
+							double price = Helper.calculatePriceDrink(parameters.get("size").getStringValue(),
+									parameters.get("drink").getStringValue(),
+									parameters.get("milk-type").getStringValue(),
+									parameters.get("delivery-pickup").getStringValue(),
+									parameters.get("iced").getStringValue(), parameters.get("amount").getNumberValue());
+
+							System.out.println("Total price: " + price);
 							SevenSegmentDisplay display = new SevenSegmentDisplay();
-							
+
 							display.printLargeNumber(price);
 							break;
 						}
 					}
-					
-					
-				
+				}
+
 				break;
 			case "order.Pizza":
-				
+
 //				System.out.println("Pizza ordered");
 				break;
 			case "order.waffle":

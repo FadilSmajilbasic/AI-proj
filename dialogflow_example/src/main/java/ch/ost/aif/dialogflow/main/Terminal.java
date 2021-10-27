@@ -11,12 +11,13 @@ public class Terminal {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		try {
 			System.out.println("Hallo, please enter a line for the client and confirm with enter, 'q' for quit");
-			String[] test = {"pizza","margherita","small","soft","delivery","yes"};
+//			String[] test = {"pizza","margherita","small","soft","delivery","yes"};
+			String[] test = {"coffe","delivery","medium","yes"};
 			String line = "";
 			int i = 0;
 			while (true) {
 //				line = br.readLine();
-				if(i < 6)
+				if(i < 4)
 					line = test[i];
 				else
 					line = br.readLine();
