@@ -1,6 +1,7 @@
 package ch.ost.aif.dialogflow.dialogflow;
 
 import java.io.IOException;
+import java.util.Map;
 
 import com.google.api.gax.rpc.ApiException;
 import com.google.cloud.dialogflow.v2.DetectIntentResponse;
@@ -10,17 +11,18 @@ import com.google.cloud.dialogflow.v2.SessionName;
 import com.google.cloud.dialogflow.v2.SessionsClient;
 import com.google.cloud.dialogflow.v2.TextInput;
 import com.google.protobuf.Struct;
+import com.google.protobuf.Value;
 
 public class CustomRequestBuilder {
 
 	// same as template
-	public static void detectIntentTexts(String projectId, String text, String sessionId, String languageCode
-		) throws IOException, ApiException {
+	public static void detectIntentTexts(String projectId, String text, String sessionId, String languageCode)
+			throws IOException, ApiException {
 		// Instantiates a client
 		try (SessionsClient sessionsClient = SessionsClient.create()) {
 			// Set the session name using the sessionId (UUID) and projectID (my-project-id)
 			SessionName session = SessionName.of(projectId, sessionId);
-			//System.out.println("Session Path: " + session.toString());
+			// System.out.println("Session Path: " + session.toString());
 
 			// Detect intents for each text input
 
@@ -39,16 +41,38 @@ public class CustomRequestBuilder {
 			// own code
 			// get the intent as a String
 			String intent = queryResult.getIntent().getDisplayName();
-
 			// print the text answer
 			System.out.println(queryResult.getFulfillmentText());
+			System.out.println("intent: " + intent);
 			// switch-case to treat different intents differently
 			switch (intent) {
 			case "Default Welcome Intent": // just checking that it is the welcome intent
 				System.out.println("hello");
 				break;
+			case "order.Pizza-yes":
+				System.out.println("orderpizza-yes");
+					 
+					for (int i = 0; i < queryResult.getOutputContextsCount(); i++) {
+						if(queryResult.getOutputContexts(i).getName().endsWith("orderpizza-followup")) {
+							
+							Map<String, Value> parameters = queryResult.getOutputContexts(i).getParameters().getFieldsMap();
+
+							
+							double price = Helper.calculatePricePizza(parameters.get("size").getStringValue(), parameters.get("pizza").getStringValue(), parameters.get("delivery-pickup").getStringValue());
+							System.out.println("Total price: " + price); 
+							SevenSegmentDisplay display = new SevenSegmentDisplay();
+							
+							display.printLargeNumber(price);
+							break;
+						}
+					}
+					
+					
+				
+				break;
 			case "order.Pizza":
-				System.out.println("Pizza ordered");
+				
+//				System.out.println("Pizza ordered");
 				break;
 			case "order.waffle":
 				System.out.println("Waffle ordered");

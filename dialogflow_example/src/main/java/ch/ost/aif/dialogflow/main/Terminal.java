@@ -11,16 +11,23 @@ public class Terminal {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		try {
 			System.out.println("Hallo, please enter a line for the client and confirm with enter, 'q' for quit");
+			String[] test = {"pizza","margherita","small","soft","delivery","yes"};
 			String line = "";
+			int i = 0;
 			while (true) {
-				line = br.readLine();
+//				line = br.readLine();
+				if(i < 6)
+					line = test[i];
+				else
+					line = br.readLine();
 				if (line.equals("")) { //skip empty lines
 					continue;
 				}
 				if (line.equals("q")) { // quit the application
 					break;
 				}
-				CustomRequestBuilder.detectIntentTexts("coffee-shop-bpgc", line, "abcde", "en-US");
+				CustomRequestBuilder.detectIntentTexts("coffee-shop-bpgc", line, "terminal-client", "en-US");
+				i++;
 			}
 			System.out.println("Goodbye");
 		} catch (IOException e) {
