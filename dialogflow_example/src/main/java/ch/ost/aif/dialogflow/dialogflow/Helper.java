@@ -7,7 +7,7 @@ public class Helper {
 	private class Size {
 		final static double SMALL = 0.6d;
 		final static double MEDIUM = 1.0d;
-		final static double LARGE = 1.6;
+		final static double LARGE = 1.6d;
 	}
 
 	private class Pizza {
@@ -69,18 +69,8 @@ public class Helper {
 			total += Pizza.CALZONE;
 			break;
 		}
-		
-		switch (size) {
-		case "small":
-			total *= Size.SMALL;
-			break;
-		case "medium":
-			total *= Size.MEDIUM;
-			break;
-		case "large":
-			total *= Size.LARGE;
-			break;
-		}
+
+		total = sizePriceAdjustment(total, size);
 
 		if (delivery.equals("delivery")) {
 			total += 2d;
@@ -92,7 +82,6 @@ public class Helper {
 	public static double calculatePriceDrink(String size, String drink, String milk, String delivery, String iced,
 			double amount) {
 		double total = 0;
-		
 
 		switch (drink) {
 		case "Coffe":
@@ -132,19 +121,8 @@ public class Helper {
 			total += Drink.COCOA;
 			break;
 		}
-		
 
-		switch (size) {
-		case "small":
-			total *= Size.SMALL;
-			break;
-		case "medium":
-			total *= Size.MEDIUM;
-			break;
-		case "large":
-			total *= Size.LARGE;
-			break;
-		}
+		total = sizePriceAdjustment(total, size);
 
 		switch (milk) {
 		case "almond milk":
@@ -169,8 +147,6 @@ public class Helper {
 		}
 
 		if (amount != 0) {
-
-			System.out.println("amount: " + amount + " total: " + total);
 			total *= amount;
 		}
 
@@ -180,8 +156,61 @@ public class Helper {
 
 		return total;
 	}
-//
-//	public static double calculatePriceWaffle(String size, String waffle, String topping, String delivery) {
-//
-//	}
+
+	public static double calculatePriceWaffle(String size, String waffle, String delivery) {
+		double total = 0;
+		switch (waffle) {
+		case "american":
+			total += Waffle.AMERICAN;
+			break;
+		case "belgian":
+			total += Waffle.BELGIAN;
+			break;
+		case "toaster":
+			total += Waffle.TOASTER;
+			break;
+		case "hong kong egg":
+			total += Waffle.HONG_KONG_EGG;
+			break;
+		}
+
+		total = sizePriceAdjustment(total, size);
+
+		if (delivery.equals("delivery")) {
+			total += 2d;
+		}
+		return total;
+
+	}
+
+	public static double calculatePriceIceCream(String size, String cone, String delivery) {
+		double total = 0;
+		if (cone.equals("cone"))
+			total += IceCream.CONED;
+		else
+			total += IceCream.CUP;
+
+		total = sizePriceAdjustment(total, size);
+
+		if (delivery.equals("delivery")) {
+			total += 2d;
+		}
+		return total;
+
+	}
+
+	private static double sizePriceAdjustment(double price, String size) {
+		switch (size) {
+		case "small":
+			price *= Size.SMALL;
+			break;
+		case "medium":
+			price *= Size.MEDIUM;
+			break;
+		case "large":
+			price *= Size.LARGE;
+			break;
+		}
+		return price;
+	}
 }

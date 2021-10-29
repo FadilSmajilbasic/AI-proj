@@ -20,35 +20,18 @@ public class CustomRequestBuilder {
 			throws IOException, ApiException {
 		// Instantiates a client
 		try (SessionsClient sessionsClient = SessionsClient.create()) {
-			// Set the session name using the sessionId (UUID) and projectID (my-project-id)
 			SessionName session = SessionName.of(projectId, sessionId);
-			// System.out.println("Session Path: " + session.toString());
-
-			// Detect intents for each text input
-
-			// Set the text (hello) and language code (en-US) for the query
 			TextInput.Builder textInput = TextInput.newBuilder().setText(text).setLanguageCode(languageCode);
-
-			// Build the query with the TextInput
 			QueryInput queryInput = QueryInput.newBuilder().setText(textInput).build();
-
-			// Performs the detect intent request
 			DetectIntentResponse response = sessionsClient.detectIntent(session, queryInput);
 
-			// Display the query result
 			QueryResult queryResult = response.getQueryResult();
 
-			// own code
-			// get the intent as a String
 			String intent = queryResult.getIntent().getDisplayName();
-			// print the text answer
+
 			System.out.println(queryResult.getFulfillmentText());
-			System.out.println("intent: " + intent);
-			// switch-case to treat different intents differently
+
 			switch (intent) {
-			case "Default Welcome Intent": // just checking that it is the welcome intent
-				System.out.println("hello");
-				break;
 			case "order.Pizza-yes":
 
 				for (int i = 0; i < queryResult.getOutputContextsCount(); i++) {
@@ -59,7 +42,6 @@ public class CustomRequestBuilder {
 						double price = Helper.calculatePricePizza(parameters.get("size").getStringValue(),
 								parameters.get("pizza").getStringValue(),
 								parameters.get("delivery-pickup").getStringValue());
-						System.out.println("Total price: " + price);
 						SevenSegmentDisplay display = new SevenSegmentDisplay();
 
 						display.printLargeNumber(price);
@@ -84,7 +66,6 @@ public class CustomRequestBuilder {
 									parameters.get("delivery-pickup").getStringValue(),
 									parameters.get("iced").getStringValue(), parameters.get("amount").getNumberValue());
 
-							System.out.println("Total price: " + price);
 							SevenSegmentDisplay display = new SevenSegmentDisplay();
 
 							display.printLargeNumber(price);
@@ -94,20 +75,49 @@ public class CustomRequestBuilder {
 				}
 
 				break;
-			case "order.Pizza":
+			case "order.waffle-yes":
 
-//				System.out.println("Pizza ordered");
+				if (queryResult.getAllRequiredParamsPresent()) {
+					for (int i = 0; i < queryResult.getOutputContextsCount(); i++) {
+						if (queryResult.getOutputContexts(i).getName().endsWith("orderwaffle-followup")) {
+
+							Map<String, Value> parameters = queryResult.getOutputContexts(i).getParameters()
+									.getFieldsMap();
+
+							double price = Helper.calculatePriceWaffle(parameters.get("size").getStringValue(),
+									parameters.get("waffle").getStringValue(),
+									parameters.get("delivery-pickup").getStringValue());
+							SevenSegmentDisplay display = new SevenSegmentDisplay();
+
+							display.printLargeNumber(price);
+							break;
+						}
+					}
+				}
+
 				break;
-			case "order.waffle":
-				System.out.println("Waffle ordered");
-				break;
-			case "order.icecream":
-				System.out.print("Ice cream ordered");
+			case "order.icecream-yes":
+				if (queryResult.getAllRequiredParamsPresent()) {
+					for (int i = 0; i < queryResult.getOutputContextsCount(); i++) {
+						if (queryResult.getOutputContexts(i).getName().endsWith("ordericecream-followup")) {
+
+							Map<String, Value> parameters = queryResult.getOutputContexts(i).getParameters()
+									.getFieldsMap();
+
+							double price = Helper.calculatePriceIceCream(parameters.get("size").getStringValue(),
+									parameters.get("ice_cream").getStringValue(),
+									parameters.get("delivery-pickup").getStringValue());
+
+							SevenSegmentDisplay display = new SevenSegmentDisplay();
+
+							display.printLargeNumber(price);
+							break;
+						}
+					}
+				}
 			case "Goodbye":
 				System.out.println("Thank you, goodbye");
 				break;
-			default: // mirrors the intent string and the payload as default (if the intent isn't
-						// treated specially)
 			}
 		}
 	}
