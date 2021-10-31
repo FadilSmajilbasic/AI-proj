@@ -15,10 +15,8 @@ import com.google.protobuf.Value;
 
 public class CustomRequestBuilder {
 
-	// same as template
 	public static void detectIntentTexts(String projectId, String text, String sessionId, String languageCode)
 			throws IOException, ApiException {
-		// Instantiates a client
 		try (SessionsClient sessionsClient = SessionsClient.create()) {
 			SessionName session = SessionName.of(projectId, sessionId);
 			TextInput.Builder textInput = TextInput.newBuilder().setText(text).setLanguageCode(languageCode);

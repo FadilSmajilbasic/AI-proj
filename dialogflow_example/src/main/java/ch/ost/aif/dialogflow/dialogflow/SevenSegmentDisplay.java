@@ -8,7 +8,7 @@ package ch.ost.aif.dialogflow.dialogflow;
  */
 public class SevenSegmentDisplay {
 
-	private final String[][] numbers = { { " - ", "| |", "   ", "| |", " - " }, // 0
+	private final String[][] NUMBERS = { { " - ", "| |", "   ", "| |", " - " }, // 0
 			{ "   ", "  |", "   ", "  |", "   " }, // 1
 			{ " - ", "  |", " - ", "|  ", " - " }, // 2
 			{ " - ", "  |", " - ", "  |", " - " }, // 3
@@ -17,30 +17,29 @@ public class SevenSegmentDisplay {
 			{ " - ", "|  ", " - ", "| |", " - " }, // 6
 			{ " - ", "  |", "   ", "  |", "   " }, // 7
 			{ " - ", "| |", " - ", "| |", " - " }, // 8
-			{ " - ", "| |", " - ", "  |", " - " } // 9
+			{ " - ", "| |", " - ", "  |", " - " }  // 9
 	};
 
-	private final String[] minus = { "   ", "   ", " - ", "   ", "   " };
-	private final String[] point = { "   ", "   ", "   ", "   ", " . " };
+	private final String[] MINUS = { "   ", "   ", " - ", "   ", "   " };
+	private final String[] POINT = { "   ", "   ", "   ", "   ", " . " };
 
 	void printLargeNumber(double i) {
 
 		String stringNumber = String.valueOf(i);
 		if (i < 0)
 			stringNumber = stringNumber.substring(1);
-
 		for (int j = 0; j < 5; j++) {
 			if (i < 0) {
-				System.out.print(minus[j]);
+				System.out.print(MINUS[j]);
 			}
 			for (int k = 0; k < stringNumber.length(); k++) {
 
 				if (46 == (int) stringNumber.charAt(k)) {
-					System.out.print(point[j]);
+					System.out.print(POINT[j]);
 				} else {
 
 					int intNum = ((int) stringNumber.charAt(k)) - 48;
-					System.out.print(numbers[intNum][j]);
+					System.out.print(NUMBERS[intNum][j]);
 				}
 			}
 			System.out.println("");
@@ -48,12 +47,8 @@ public class SevenSegmentDisplay {
 	}
 
 	void printLargeError() {
-		System.out.println(
-					  " -             \n" 
-					+ "|              \n" 
-					+ " -  -  -  -  - \n" 
-					+ "|  |  |  | ||  \n"
-					+ " -        -    \n");
+		System.out.println(" -             \n" + "|              \n" + " -  -  -  -  - \n" + "|  |  |  | ||  \n"
+				+ " -        -    \n");
 	}
 
 }
