@@ -26,7 +26,7 @@ public class CustomRequestBuilder {
 			QueryResult queryResult = response.getQueryResult();
 
 			String intent = queryResult.getIntent().getDisplayName();
-
+			SevenSegmentDisplay display = new SevenSegmentDisplay();
 			System.out.println(queryResult.getFulfillmentText());
 			try {
 				switch (intent) {
@@ -41,8 +41,6 @@ public class CustomRequestBuilder {
 							double price = Helper.calculatePricePizza(parameters.get("size").getStringValue(),
 									parameters.get("pizza").getStringValue(),
 									parameters.get("delivery-pickup").getStringValue());
-							SevenSegmentDisplay display = new SevenSegmentDisplay();
-
 							display.printLargeNumber(price);
 							break;
 						}
@@ -66,7 +64,6 @@ public class CustomRequestBuilder {
 										parameters.get("iced").getStringValue(),
 										parameters.get("amount").getNumberValue());
 
-								SevenSegmentDisplay display = new SevenSegmentDisplay();
 
 								display.printLargeNumber(price);
 								break;
@@ -87,7 +84,6 @@ public class CustomRequestBuilder {
 								double price = Helper.calculatePriceWaffle(parameters.get("size").getStringValue(),
 										parameters.get("waffle").getStringValue(),
 										parameters.get("delivery-pickup").getStringValue());
-								SevenSegmentDisplay display = new SevenSegmentDisplay();
 
 								display.printLargeNumber(price);
 								break;
@@ -108,7 +104,6 @@ public class CustomRequestBuilder {
 										parameters.get("ice_cream").getStringValue(),
 										parameters.get("delivery-pickup").getStringValue());
 
-								SevenSegmentDisplay display = new SevenSegmentDisplay();
 
 								display.printLargeNumber(price);
 								break;
@@ -120,7 +115,7 @@ public class CustomRequestBuilder {
 					break;
 				}
 			} catch (Exception e) {
-				new SevenSegmentDisplay().printLargeError();
+				display.printLargeError();
 
 			}
 		}
