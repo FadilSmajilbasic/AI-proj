@@ -28,62 +28,18 @@ public class CustomRequestBuilder {
 			String intent = queryResult.getIntent().getDisplayName();
 
 			System.out.println(queryResult.getFulfillmentText());
+			try {
+				switch (intent) {
+				case "order.Pizza-yes":
 
-			switch (intent) {
-			case "order.Pizza-yes":
-
-				for (int i = 0; i < queryResult.getOutputContextsCount(); i++) {
-					if (queryResult.getOutputContexts(i).getName().endsWith("orderpizza-followup")) {
-
-						Map<String, Value> parameters = queryResult.getOutputContexts(i).getParameters().getFieldsMap();
-
-						double price = Helper.calculatePricePizza(parameters.get("size").getStringValue(),
-								parameters.get("pizza").getStringValue(),
-								parameters.get("delivery-pickup").getStringValue());
-						SevenSegmentDisplay display = new SevenSegmentDisplay();
-
-						display.printLargeNumber(price);
-						break;
-					}
-				}
-
-				break;
-
-			case "order.drink.same_card":
-			case "order.drink.different_card":
-				if (queryResult.getAllRequiredParamsPresent()) {
 					for (int i = 0; i < queryResult.getOutputContextsCount(); i++) {
-						if (queryResult.getOutputContexts(i).getName().endsWith("orderdrink-followup")) {
+						if (queryResult.getOutputContexts(i).getName().endsWith("orderpizza-followup")) {
 
 							Map<String, Value> parameters = queryResult.getOutputContexts(i).getParameters()
 									.getFieldsMap();
 
-							double price = Helper.calculatePriceDrink(parameters.get("size").getStringValue(),
-									parameters.get("drink").getStringValue(),
-									parameters.get("milk-type").getStringValue(),
-									parameters.get("delivery-pickup").getStringValue(),
-									parameters.get("iced").getStringValue(), parameters.get("amount").getNumberValue());
-
-							SevenSegmentDisplay display = new SevenSegmentDisplay();
-
-							display.printLargeNumber(price);
-							break;
-						}
-					}
-				}
-
-				break;
-			case "order.waffle-yes":
-
-				if (queryResult.getAllRequiredParamsPresent()) {
-					for (int i = 0; i < queryResult.getOutputContextsCount(); i++) {
-						if (queryResult.getOutputContexts(i).getName().endsWith("orderwaffle-followup")) {
-
-							Map<String, Value> parameters = queryResult.getOutputContexts(i).getParameters()
-									.getFieldsMap();
-
-							double price = Helper.calculatePriceWaffle(parameters.get("size").getStringValue(),
-									parameters.get("waffle").getStringValue(),
+							double price = Helper.calculatePricePizza(parameters.get("size").getStringValue(),
+									parameters.get("pizza").getStringValue(),
 									parameters.get("delivery-pickup").getStringValue());
 							SevenSegmentDisplay display = new SevenSegmentDisplay();
 
@@ -91,31 +47,81 @@ public class CustomRequestBuilder {
 							break;
 						}
 					}
-				}
 
-				break;
-			case "order.icecream-yes":
-				if (queryResult.getAllRequiredParamsPresent()) {
-					for (int i = 0; i < queryResult.getOutputContextsCount(); i++) {
-						if (queryResult.getOutputContexts(i).getName().endsWith("ordericecream-followup")) {
+					break;
 
-							Map<String, Value> parameters = queryResult.getOutputContexts(i).getParameters()
-									.getFieldsMap();
+				case "order.drink.same_card":
+				case "order.drink.different_card":
+					if (queryResult.getAllRequiredParamsPresent()) {
+						for (int i = 0; i < queryResult.getOutputContextsCount(); i++) {
+							if (queryResult.getOutputContexts(i).getName().endsWith("orderdrink-followup")) {
 
-							double price = Helper.calculatePriceIceCream(parameters.get("size").getStringValue(),
-									parameters.get("ice_cream").getStringValue(),
-									parameters.get("delivery-pickup").getStringValue());
+								Map<String, Value> parameters = queryResult.getOutputContexts(i).getParameters()
+										.getFieldsMap();
 
-							SevenSegmentDisplay display = new SevenSegmentDisplay();
+								double price = Helper.calculatePriceDrink(parameters.get("size").getStringValue(),
+										parameters.get("drink").getStringValue(),
+										parameters.get("milk-type").getStringValue(),
+										parameters.get("delivery-pickup").getStringValue(),
+										parameters.get("iced").getStringValue(),
+										parameters.get("amount").getNumberValue());
 
-							display.printLargeNumber(price);
-							break;
+								SevenSegmentDisplay display = new SevenSegmentDisplay();
+
+								display.printLargeNumber(price);
+								break;
+							}
 						}
 					}
+
+					break;
+				case "order.waffle-yes":
+
+					if (queryResult.getAllRequiredParamsPresent()) {
+						for (int i = 0; i < queryResult.getOutputContextsCount(); i++) {
+							if (queryResult.getOutputContexts(i).getName().endsWith("orderwaffle-followup")) {
+
+								Map<String, Value> parameters = queryResult.getOutputContexts(i).getParameters()
+										.getFieldsMap();
+
+								double price = Helper.calculatePriceWaffle(parameters.get("size").getStringValue(),
+										parameters.get("waffle").getStringValue(),
+										parameters.get("delivery-pickup").getStringValue());
+								SevenSegmentDisplay display = new SevenSegmentDisplay();
+
+								display.printLargeNumber(price);
+								break;
+							}
+						}
+					}
+
+					break;
+				case "order.icecream-yes":
+					if (queryResult.getAllRequiredParamsPresent()) {
+						for (int i = 0; i < queryResult.getOutputContextsCount(); i++) {
+							if (queryResult.getOutputContexts(i).getName().endsWith("ordericecream-followup")) {
+
+								Map<String, Value> parameters = queryResult.getOutputContexts(i).getParameters()
+										.getFieldsMap();
+
+								double price = Helper.calculatePriceIceCream(parameters.get("size").getStringValue(),
+										parameters.get("ice_cream").getStringValue(),
+										parameters.get("delivery-pickup").getStringValue());
+
+								SevenSegmentDisplay display = new SevenSegmentDisplay();
+
+								display.printLargeNumber(price);
+								break;
+							}
+						}
+					}
+				case "Goodbye":
+					System.out.println("Thank you, goodbye");
+					break;
 				}
-			case "Goodbye":
-				System.out.println("Thank you, goodbye");
-				break;
+			} catch (Exception e) {
+				new SevenSegmentDisplay().printLargeError();
+
 			}
 		}
 	}
